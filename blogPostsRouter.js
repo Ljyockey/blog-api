@@ -10,4 +10,8 @@ BlogPosts.create('blog-1', 'Look! It\'s my first blog!', 'LJ' );
 BlogPosts.create('blog-2', 'Oh boy! What a wonderful day!', 'Mickey Mouse');
 BlogPosts.create('blog-3', 'It\'s lev-i-O-sa!', 'Hermione');
 
+router.get('/', (req, res) => {
+	res.json(BlogPosts.get());
+});
+
 module.exports = router;
