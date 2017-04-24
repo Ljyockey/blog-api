@@ -34,4 +34,29 @@ router.delete('/:id', jsonParser, (req, res) => {
 	res.status(204).end();
 });
 
+router.put('/:id', jsonParser, (req, res) => {
+	const requiredFields = ['title', 'content', 'author'];
+	for (let i = 0; i < requiredFields.length; i++) {
+		const field = requiredFields[i];
+		if (!(field in req.body)) {
+			const message = `Missing \`${field}\` in request body`;
+			console.error(message);
+			return res.status(400).send(message);
+		}
+	}
+	if (req.params.id !== req.body.id) {
+		message = 'ID in request body and request parameter don\'t match';
+		console.error(message);
+		return res.status(400).send(message);
+	}
+	console.log(`Updating item \`${req.params.id}\``);
+		const updatedItem = BlogPosts.update({
+			id: req.params.id,
+			title: req.body.title,
+			content: req.body.content,
+			author: req.body.author
+		});
+	res.status(204).json(updatedItem);
+});
+
 module.exports = router;
