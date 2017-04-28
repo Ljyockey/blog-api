@@ -11,6 +11,31 @@ app.use(express.static('public'));
 
 app.use('/blog-posts', blogPostsRouter);
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
-});
+let server;
+
+function runServer() {
+	const port = process.env.port || 8080;
+	return new Promise((resolve, reject) => {
+		server = app.listen(port, () => {
+			console.log(`Your app is listening on port ${port}`);
+			resolve(server);
+		}).on('error', err => {
+			reject(err);
+		});
+	});
+}
+
+function closeSever() {
+	return new Promise((resolve, reject) => {
+		console.log('closing server');
+		server.close(err => {
+			if (err) {
+				reject(err);
+				return;
+			}
+			resolve();
+		});
+	});
+}
+
+module.exports = {app, runServer, closeServer};
