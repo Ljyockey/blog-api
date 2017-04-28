@@ -4,6 +4,7 @@
   "description": "Thinkful Blog API challenge",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "test": "mocha ./test"
   },
   "author": "",
