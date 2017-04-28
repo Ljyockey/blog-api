@@ -42,7 +42,7 @@ describe('Blog Posts', function() {
 			.send(updateData);
 		})
 		.then(function(res) {
-			res.should.have.status(204);
+			res.should.have.status(200);
 			res.should.be.json;
 			res.body.should.be.a('object');
 			res.body.should.deep.equal(Object.assign(updateData, {publishDate: res.body.publishDate}));
