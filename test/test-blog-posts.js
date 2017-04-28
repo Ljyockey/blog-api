@@ -11,4 +11,12 @@ describe('Blog Posts', function() {
 	after(function() {
 		return closeServer();
 	});
+	it('should list blog posts on GET', function() {
+		return chai.request(app)
+		.get('/blog-posts')
+		.then(function(res) {
+			res.should.have.status(200);
+			res.should.be.json;
+		})
+	})
 });
