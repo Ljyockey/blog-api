@@ -21,8 +21,8 @@ describe('Blog Posts', function() {
 		.end(function(err, res) {
 			res.should.have.status(200);
 			res.should.be.json;
+			done();
 		});
-		done();
 	});
 
 	//POST
@@ -36,8 +36,8 @@ describe('Blog Posts', function() {
 			res.should.be.json;
 			res.body.should.be.a('object');
 			res.body.should.include.keys('id', 'title', 'content', 'author');
+			done();
 		});
-		done();
 	});
 
 	//POST edge case
@@ -48,8 +48,8 @@ describe('Blog Posts', function() {
 				.send(badData)
 				.end(function(err, res) {
 					res.should.have.status(400);
-				})
-			done();
+					done();
+				});
 	});
 
 	//PUT
@@ -83,9 +83,9 @@ describe('Blog Posts', function() {
 				.send(testData)
 				.end(function(err, res) {
 					res.should.have.status(400);
+					done();
 				});
 			})
-		done();
 	});
 
 	//DELETE
@@ -97,9 +97,9 @@ describe('Blog Posts', function() {
 			.delete(`/blog-posts/${res.body[0].id}`)
 			.end(function(err, res) {
 			res.should.have.status(204);
+			done();
 		});
 	});
-		done();
 	});
 
 });
