@@ -6,16 +6,14 @@ mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
 
-const {Blogs} = require('./models');
+const {blogPost} = require('./models');
 
 const app = express();
 app.use(bodyParser.json());
 
 app.get('/blog-posts', (req, res) => {
-	console.log(DATABASE_URL);
-	Blogs.find().exec().then(blogs => {
-		console.log(blogs);
-		res.json(blogs.map(blogs => blogs.apiRepr()));
+	blogPost.find().exec().then(blogPost => {
+		res.json(blogPost.map(blogPost => blogPost.apiRepr()));
 	}).catch(err => {
 		console.error(err);
 		res.status(500).json({message: 'Internal server error'});
@@ -25,7 +23,7 @@ app.get('/blog-posts', (req, res) => {
 //GET request by ID
 
 app.get('/blog-posts/:id', (req, res) => {
-	Blogs.findById(req.params.id).exec().then(results =>
+	blogPost.findById(req.params.id).exec().then(results =>
 		res.json(results.apiRepr())).catch(err => {
 			console.error(err);
 			res.status(500).json({message: 'Internal server error'})
@@ -43,7 +41,7 @@ app.post('blog-posts', (req, res) => {
 		}
 	}
 //create once req.body is validated
-Blogs.create({
+blogPost.create({
 	title: req.body.title,
 	content: req.body.content,
 	author: req.body.author,
@@ -67,13 +65,13 @@ app.put('/blog-posts/:id', (req, res) => {
 			toUpdate[field] = req.body[field];
 		}
 	});
-	Blogs.findByIdAndUpdate(req.params.id, {$set: toUpdate}).exec()
+	blogPost.findByIdAndUpdate(req.params.id, {$set: toUpdate}).exec()
 	.then(results => res.status(204).end())
 	.catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
 app.delete('/blog-posts/:id', (req, res) => {
-	Blogs.findByIdAndRemove(req.params.id).exec()
+	blogPost.findByIdAndRemove(req.params.id).exec()
 	.then(results => res.status(204).end())
 	.catch(err => 
 		res.status(500).json({message: 'Internal server error'}));
