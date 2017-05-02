@@ -30,7 +30,7 @@ app.get('/blog-posts/:id', (req, res) => {
 		});
 });
 
-app.post('blog-posts', (req, res) => {
+app.post('/blog-posts', (req, res) => {
 	const requiredFields = ['title', 'author', 'content'];
 	for (let i=0; i<requiredFields.length; i++) {
 		const field = requiredFields[i];
