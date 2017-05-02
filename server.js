@@ -25,7 +25,7 @@ app.get('/blog-posts', (req, res) => {
 //GET request by ID
 
 app.get('/blog-posts/:id', (req, res) => {
-	blogPost.findById(req.params.id).exec().then(results =>
+	Blogs.findById(req.params.id).exec().then(results =>
 		res.json(results.apiRepr())).catch(err => {
 			console.error(err);
 			res.status(500).json({message: 'Internal server error'})
@@ -43,7 +43,7 @@ app.post('blog-posts', (req, res) => {
 		}
 	}
 //create once req.body is validated
-blogPost.create({
+Blogs.create({
 	title: req.body.title,
 	content: req.body.content,
 	author: req.body.author,
@@ -67,13 +67,13 @@ app.put('/blog-posts/:id', (req, res) => {
 			toUpdate[field] = req.body[field];
 		}
 	});
-	blogPost.findByIdAndUpdate(req.params.id, {$set: toUpdate}).exec()
+	Blogs.findByIdAndUpdate(req.params.id, {$set: toUpdate}).exec()
 	.then(results => res.status(204).end())
 	.catch(err => res.status(500).json({message: 'Internal server error'}));
 });
 
 app.delete('/blog-posts/:id', (req, res) => {
-	blogPost.findByIdAndRemove(req.params.id).exec()
+	Blogs.findByIdAndRemove(req.params.id).exec()
 	.then(results => res.status(204).end())
 	.catch(err => 
 		res.status(500).json({message: 'Internal server error'}));
@@ -97,7 +97,7 @@ function runServer(databaseUrl= DATABASE_URL, port = PORT) {
 			console.log(`Your app is listening on port ${port}`);
 			resolve(server);
 		}).on('error', err => {
-			mongoose.diconnect();
+			mongoose.disconnect();
 			reject(err);
 		});
 	});
